@@ -39,11 +39,22 @@ console.log(result3)
 // []"""
 
 
-def manufactureGifts(gifts_to_produce: list[dict[str, int]]) -> list[str]:
+# Ineficiente, con list compreheison creas una lista que no usas y haces muchos append consecutivos que con extend puedes agrupar
+"""def manufactureGifts(gifts_to_produce: list[dict[str, int]]) -> list[str]:
     gifts = []
     for gift in gifts_to_produce:
         if gift["quantity"] > 0:
             [gifts.append(gift["toy"]) for _ in range(gift["quantity"])]
+            
+    return gifts"""
+
+
+def manufactureGifts(gifts_to_produce):
+    gifts = []
+    for gift in gifts_to_produce:
+        if gift["quantity"] > 0:
+            toys_batch = [gift["toy"]] *  gift["quantity"]
+            gifts.extend(toys_batch)
             
     return gifts
 
