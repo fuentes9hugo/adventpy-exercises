@@ -11,32 +11,7 @@ Tu tarea es escribir una función que reciba esta lista y devuelva un array de s
 
 Cada juguete repetido tantas veces como indique quantity
 En el mismo orden en el que aparecen en la lista original
-Ignorando los juguetes con cantidades no válidas (menores o iguales a 0, o que no sean número)
-🧩 Ejemplos
-const production1 = [
-  { toy: 'car', quantity: 3 },
-  { toy: 'doll', quantity: 1 },
-  { toy: 'ball', quantity: 2 }
-]
-
-const result1 = manufactureGifts(production1)
-console.log(result1)
-// ['car', 'car', 'car', 'doll', 'ball', 'ball']
-
-const production2 = [
-  { toy: 'train', quantity: 0 }, // no se fabrica
-  { toy: 'bear', quantity: -2 }, // tampoco
-  { toy: 'puzzle', quantity: 1 }
-]
-
-const result2 = manufactureGifts(production2)
-console.log(result2)
-// ['puzzle']
-
-const production3 = []
-const result3 = manufactureGifts(production3)
-console.log(result3)
-// []"""
+Ignorando los juguetes con cantidades no válidas (menores o iguales a 0, o que no sean número)"""
 
 
 # Ineficiente, con list compreheison creas una lista que no usas y haces muchos append consecutivos que con extend puedes agrupar
