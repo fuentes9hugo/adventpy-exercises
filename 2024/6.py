@@ -10,7 +10,6 @@ Ten en cuenta entonces que el * puede estar dentro, fuera o incluso no estar. Y 
 def inBox(box):
     for row in box[1:-1]:
         if row[0] == "#" and row[-1] == "#" and "*" in row:
-
             return True
          
     return False
