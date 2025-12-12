@@ -18,7 +18,36 @@ Devuelve uno de estos valores:
 
 
 def runFactory(factory: list[str]) -> str:
-    pass
+    move_map = {
+        ">": (0, 1),
+        "<": (0, -1),
+        "^": (-1, 0),
+        "v": (1, 0)
+    }
+
+    height = len(factory)
+    width = len(factory[0])
+
+    traveled_positions = set()
+
+    x, y = 0, 0
+    current_move = factory[x][y]
+
+    while current_move != ".":
+        traveled_positions.add((x, y))
+
+        x += move_map[current_move][0]
+        y += move_map[current_move][1]
+
+        if x < 0 or y < 0 or x >= height or y >= width:
+            return "broken"
+
+        if (x, y) in traveled_positions:
+            return "loop"
+        
+        current_move = factory[x][y]
+
+    return "completed"
 
 
 def test(expected, received):

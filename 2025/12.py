@@ -20,7 +20,30 @@ Devuelve el resultado de la batalla como un número:
 
 
 def elfBattle(elf1: str, elf2: str) -> int:
-    pass
+    elf1_health, elf2_health = 3, 3
+    def attack(attacker, defender):
+        if attacker == "A" and defender != "B":
+            return 1
+        
+        elif attacker == "F":
+            return 2
+        
+        return 0
+
+    for elf1_attk, elf2_attk in zip(elf1, elf2):
+        elf2_health -= attack(elf1_attk, elf2_attk)
+        elf1_health -= attack(elf2_attk, elf1_attk)
+
+        if elf1_health <= 0 or elf2_health <= 0:
+            break
+    
+    if elf1_health == elf2_health or elf1_health <= 0 and elf2_health <= 0:
+        return 0
+    
+    elif elf1_health > elf2_health:
+        return 1
+    
+    return 2
 
 
 def test(expected, received):
