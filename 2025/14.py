@@ -14,7 +14,17 @@ Reglas:
 
 
 def findGiftPath(workshop: dict, gift: str | int | bool) -> list[str]:
-    pass
+    for key, value in workshop.items():
+        if isinstance(value, dict):
+            lower_level = findGiftPath(value, gift)
+
+            if lower_level:
+                return [key] + lower_level
+        
+        if value == gift:
+            return [key]
+    
+    return []
 
 
 def test(expected, received):
