@@ -15,6 +15,20 @@ Mira el ejemplo para ver cómo debes dibujar la tabla:"""
 
 
 def drawTable(data: list[dict[str, str | int]], sortBy: str) -> str:
+    new_data = data.copy()
+    new_data.sort(key=lambda x: x[sortBy])
+    keys = list(new_data[0].keys())
+    widths = [max(len(str(row[k])) for row in new_data) for k in keys]
+
+    separator = "+" + "+".join("-" * (w + 2) for w in widths) + "+"
+    headers = [chr(65 + i) for i in range(len(keys))]
+    
+    header_row = "|" + "|".join(f" {h.ljust(w)} " for h, w in zip(headers, widths)) + "|"
+    rows = ["|" + "|".join(f" {str(row[k]).ljust(w)} " for k, w in zip(keys, widths)) + "|" for row in new_data]
+
+    return "\n".join([separator, header_row, separator] + rows + [separator])
+
+    """
     data_map = [tuple(value for value in row.values()) for row in data]
     
     sort_by_index = tuple(data[0].keys()).index(sortBy)
@@ -57,6 +71,7 @@ def drawTable(data: list[dict[str, str | int]], sortBy: str) -> str:
     table.append(table_limit)   
 
     return "\n".join(table)
+    """
 
 
 def main():
