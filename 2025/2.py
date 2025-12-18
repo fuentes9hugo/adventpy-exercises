@@ -28,8 +28,8 @@ def manufactureGifts(gifts_to_produce):
     gifts = []
     for gift in gifts_to_produce:
         if gift["quantity"] > 0:
-            for _ in range(gift["quantity"]):
-                gifts.append(gift["toy"])
+            gift_times = [gift["toy"]] * gift["quantity"]
+            gifts.extend(gift_times)
             
     return gifts
 
