@@ -11,7 +11,7 @@ Ten en cuenta: El primer elemento del array es siempre el primer tramo del viaje
 
 
 def revealSantaRoute(routes: list[list[str]]) -> list[str]:
-    routes_map = {route[0]: route[1] for route in routes}
+    routes_map = {origin: destination for origin, destination in routes}
 
     corrected_routes = []
     next_route = routes[0][0]
