@@ -115,7 +115,7 @@ def main():
     # Resultado: 1
 
     print(test(21, minStepsToDeliver([['S', 'G', 'G', 'G', 'G', 'G', 'G']])))
-    # Resultado: 6
+    # Resultado: 21
 
     print(test(47, minStepsToDeliver([
         ['S', '.', 'G', '.', '.', '.'],
@@ -128,8 +128,15 @@ def main():
 
     print(test(3, minStepsToDeliver([['S', '.', '.', 'G']])))
 
-    print(test(-1, minStepsToDeliver([
-        ['S', '.', '.', 'G', '.', '#', 'G'] 
+    print(test(-1, minStepsToDeliver([['S', '.', '.', 'G', '.', '#', 'G']])))
+
+    print(test(34, minStepsToDeliver([
+        ['S', '.', 'G', 'G', '.', '.'],
+        ['.', '#', '.', '#', '#', '.'],
+        ['.', '#', '.', '#', '.', 'G'],
+        ['.', '.', 'G', '#', '.', '#'],
+        ['.', '.', '#', '#', '.', '#'],
+        ['.', 'G', '.', '#', 'G', '#']
     ])))
 
 if __name__ == "__main__":
