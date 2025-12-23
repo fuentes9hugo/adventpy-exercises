@@ -45,6 +45,7 @@ def minStepsToDeliver(map: list[list[str]]) -> int:
     if houses_ammount == 0: return -1
 
     traveled_houses = set()
+    visited_pos = {current_pos}
 
     from collections import deque
 
@@ -62,10 +63,10 @@ def minStepsToDeliver(map: list[list[str]]) -> int:
 
             if not 0 <= next_y < len(map) or not 0 <= next_x < len(map[0]): continue
 
-            if map[next_y][next_x] == "#": continue
-
             next_move = (next_y, next_x)
             current_steps += 1
+
+            if map[next_y][next_x] == "#" or next_move in visited_pos: continue
 
             if map[next_y][next_x] == "G" and next_move not in traveled_houses:
                 steps_ammount += current_steps
@@ -77,6 +78,8 @@ def minStepsToDeliver(map: list[list[str]]) -> int:
             
             elif map[next_y][next_x] == ".":
                 queue.append((next_move, current_steps))
+            
+            visited_pos.add(next_move)
     
     return -1
 
