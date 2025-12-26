@@ -17,14 +17,17 @@ Lo difícil, e importante, es que entiendas que Santa Claus va entregando y reco
 
 
 def canCarry(capacity: int, trip: list[list[int]]) -> bool:
-    trips = {i: {"gifts_ammount": t[0],
-                 "collection_point": t[1],
-                 "delivery_point": t[2]
-                 } for i, t in enumerate(trip)}
+    events = []
+    for gifts, collection, delivery in trip:
+        events.append((collection, gifts))
+        events.append((delivery, -gifts))
     
-    key_points = tuple(point[i] for point in trip for i in range(len(point)) if i != 0)
-    key_points = tuple(sorted(set(key_points)))
+    events.sort()
 
+    current_gifts = 0
+    for event in events:
+        current_gifts += event[1]
+        if current_gifts > capacity: return False
 
     return True
 
