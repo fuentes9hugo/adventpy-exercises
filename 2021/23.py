@@ -11,7 +11,16 @@ Necesitamos una función que nos diga si podemos reconfigurar una máquina para 
 
 def canReconfigure(from_gift: str, to_gift: str) -> bool:
     if len(from_gift) != len(to_gift): return False
-    
+
+    from_to = {}
+    to_from = {}
+    for char_from, char_to in zip(from_gift, to_gift):
+        if char_from in from_to and from_to.get(char_from) != char_to or char_to in to_from and to_from.get(char_to) != char_from:
+            return False
+
+        from_to[char_from] = char_to
+        to_from[char_to] = char_from
+
     return True
 
 
