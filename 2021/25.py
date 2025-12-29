@@ -15,7 +15,21 @@ Vamos a ver unos ejemplos.
 
 
 def canMouseEat(direction: str, game: list[list[str]]) -> bool:
-    pass
+    moves_map = {
+        "up": (-1, 0),
+        "down": (1, 0),
+        "right": (0, 1),
+        "left": (0, -1)
+    }
+
+    position_y, position_x = next((i, row.index("m")) for i, row in enumerate(game) if "m" in row)
+    
+    position_y, position_x = position_y + moves_map[direction][0], position_x + moves_map[direction][1]
+
+    if 0 <= position_y < len(game) and 0 <= position_x < len(game[0]):
+        if game[position_y][position_x] == "*": return True
+    
+    return False
 
 
 def test(expected, received):
@@ -29,10 +43,10 @@ def main():
     [' ', ' ', '*']
     ]
 
-    print(test(False, canMouseEat('up',    room)))   # false
-    print(test(True, canMouseEat('down',  room)))   # true
+    print(test(False, canMouseEat('up', room)))   # false
+    print(test(True, canMouseEat('down', room)))   # true
     print(test(False, canMouseEat('right', room)))   # false
-    print(test(False, canMouseEat('left',  room)))   # false
+    print(test(False, canMouseEat('left', room)))   # false
 
     room2 = [
     ['*', ' ', ' ', ' '],
@@ -41,10 +55,10 @@ def main():
     [' ', ' ', ' ', '*']
     ]
 
-    print(test(False, canMouseEat('up',    room2)))   # false
-    print(test(False, canMouseEat('down',  room2)))   # false
+    print(test(False, canMouseEat('up', room2)))   # false
+    print(test(False, canMouseEat('down', room2)))   # false
     print(test(True, canMouseEat('right', room2)))   # true
-    print(test(False, canMouseEat('left',  room2)))   # false
+    print(test(False, canMouseEat('left', room2)))   # false
 
 
 if __name__ == "__main__":
