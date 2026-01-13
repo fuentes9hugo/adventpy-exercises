@@ -33,7 +33,7 @@ def get_max_gifts(gifts_cities: list[int], max_gifts: int, max_cities: int) -> i
             if current_cities < max_cities:
                 more_gifts = backtrack(gifts_cities, actual_gifts, current_cities, i + 1)
 
-                if more_gifts > 0: actual_gifts = more_gifts
+                if more_gifts: actual_gifts = more_gifts
             
             posible_results.append(actual_gifts)
         
