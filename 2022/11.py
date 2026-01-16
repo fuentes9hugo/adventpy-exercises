@@ -24,7 +24,15 @@ def getCompleted(part: str, total: str) -> str:
     for i in range(len(part)):
         part_seconds += part[i] * seconds_conversion[i]
         total_seconds += total[i] * seconds_conversion[i]
+
+    temp_a, temp_b = part_seconds, total_seconds
+    while temp_b:
+        temp_a, temp_b = temp_b, temp_a % temp_b
     
+    mcd = temp_a
+    
+    return f"{part_seconds // mcd}/{total_seconds // mcd}"
+
     
 def test(e, r):
     return e == r
