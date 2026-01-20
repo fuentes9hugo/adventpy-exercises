@@ -2,7 +2,8 @@ from models import Board, Square
 
 
 def main():
-    pass
+    square = Square()
+    print(square)
 
 
 if __name__ == "__main__":
