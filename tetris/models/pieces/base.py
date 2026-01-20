@@ -26,11 +26,17 @@ class Piece(ABC):
         pass
 
 
-    def rotate_form(self, side: str):
+    def rotate(self, side: str):
         new_form = []
+        
+        if side == "right":
+            for rows in zip(*self.shape):
+                new_row = [char for char in rows[::-1]]
+                new_form.append(new_row)
 
-        for rows in zip(*self.shape):
-            new_row = [char for char in rows]
-            new_form.append(new_row if side == "left" else new_row[::-1])
+        elif side =="left":
+            for rows in zip(*[row[::-1] for row in self.shape]):
+                new_row = [char for char in rows]
+                new_form.append(new_row)
 
-        self.shape = new_form
+        self.shape = new_form if new_form else self.shape

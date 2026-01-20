@@ -1,1 +1,1 @@
-from .tetrominoes import Square, Line
+from .tetrominoes import O, I, T, S, Z, L, J

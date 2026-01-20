@@ -1,2 +1,2 @@
 from .board import Board
-from .pieces import Square, Line
+from .pieces import O, I, T, S, Z, L, J
