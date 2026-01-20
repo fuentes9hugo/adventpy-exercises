@@ -1,3 +1,6 @@
+from models import Board, Square
+
+
 def main():
     pass
 

@@ -1,0 +1,1 @@
+from .tetrominoes import Square
