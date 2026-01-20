@@ -2,24 +2,35 @@ from abc import ABC, abstractmethod
 
 
 class Piece(ABC):
-    def __init__(self, color: str):
+    def __init__(self, color: str, rotation_axis):
         self.shape: list[list[str]] = self._get_shape()
-        self.color: tuple[str, str] = color
+        self._color: tuple[str, str] = color
 
 
     def __repr__(self):
-        return f"{self.__class__.__name__}(form={self.shape!r}, color={self.color!r})"
+        return f"{self.__class__.__name__}(shape={self.shape!r}, color={self._color!r})"
     
 
     def __str__(self):
-        return "\n".join([self.color[0] + "".join(row) + self.color[1] for row in self.shape])
+        return "\n".join([self._color[0] + "".join(row) + self._color[1] for row in self.shape])
 
 
     def __eq__(self, other: "Piece"):
         if not isinstance(other, Piece):
             return NotImplemented
         
-        return self.shape == other.shape
+        return self.shape == other.shape and self._color == other._color
+    
+
+    @property
+    def color(self):
+        return self._color
+    
+
+    @property
+    def rotation_axis(self):
+        return self._rotation_axis
+
 
     @abstractmethod
     def _get_shape(self):
