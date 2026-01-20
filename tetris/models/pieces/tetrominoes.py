@@ -11,3 +11,14 @@ class Square(Piece):
             ["[]", "[]"],
             ["[]", "[]"]
         ]
+
+
+class Line(Piece):
+    def __init__(self):
+        super().__init__(color=("\033[31m", "\033[0m")) # Yellow
+
+    
+    def _get_shape(self):
+        return [
+            ["[]", "[]", "[]", "[]"]
+        ]

@@ -1,9 +1,8 @@
-from models import Board, Square
+from models import Board, Square, Line
 
 
 def main():
-    square = Square()
-    print(square)
+    pass
 
 
 if __name__ == "__main__":

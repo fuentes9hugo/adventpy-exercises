@@ -1,4 +1,4 @@
-from .pieces import Square
+from .pieces import Square, Line
 
 
 class Board:

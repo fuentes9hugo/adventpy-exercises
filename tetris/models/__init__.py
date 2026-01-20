@@ -1,2 +1,2 @@
 from .board import Board
-from .pieces import Square
+from .pieces import Square, Line

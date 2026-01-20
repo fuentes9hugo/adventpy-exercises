@@ -1,1 +1,1 @@
-from .tetrominoes import Square
+from .tetrominoes import Square, Line
