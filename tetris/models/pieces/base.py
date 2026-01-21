@@ -2,7 +2,7 @@ from abc import ABC, abstractmethod
 
 
 class Piece(ABC):
-    def __init__(self, color: str, rotation_axis):
+    def __init__(self, color: str):
         self.shape: list[list[str]] = self._get_shape()
         self._color: tuple[str, str] = color
 
@@ -25,11 +25,6 @@ class Piece(ABC):
     @property
     def color(self):
         return self._color
-    
-
-    @property
-    def rotation_axis(self):
-        return self._rotation_axis
 
 
     @abstractmethod
