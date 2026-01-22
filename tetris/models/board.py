@@ -16,6 +16,10 @@ class Board:
     def __repr__(self):
         return f"{self.__class__.__name__}(grid={self._grid!r}, current_piece={self._current_piece!r})"
 
+    
+    def __str__(self):
+        return "\n".join(["".join(row) for row in self._grid])
+
 
     @property
     def grid(self):
@@ -51,9 +55,43 @@ class Board:
         piece_len = len(self._current_piece.shape)
         y = (self.COLS + 2) // 2 - piece_len // 2 - (0 if piece_len % 2 == 0 else 1)
 
+        if not self._can_move(0, y): return False
+
         self._current_piece.grid_position = [0, y]
 
-        for i, row in enumerate(self._current_piece.shape):
+        return True
+
+    
+    def _can_move(self, pos_y: int, pos_x):
+        if any("[]" in self._grid[i][j] or self._grid[i][j] == "##"
+               for i, row in enumerate(self._current_piece.shape, start=pos_y)
+               for j, char in enumerate(row, start=pos_x)
+               if "[]" in char):
+            return False
+        
+        return True
+
+
+    def move_piece_down(self):
+        x, y = self._current_piece.grid_position
+
+        if self._can_move(x + 1, y):
+            self._current_piece.grid_position = (x + 1, y)
+            return True
+
+        return False
+    
+
+    def draw(self):
+        grid_to_draw = [row[:] for row in self._grid] # DEEP COPY -> if you do self._grid.copy() it just copies the main list but none of the lists inside
+        x, y = self._current_piece.grid_position
+
+        for i, row in enumerate(self._current_piece.shape, start=x):
             for j, char in enumerate(row, start=y):
                 if "[]" in char:
-                    self._grid[i][j] = char
+                    grid_to_draw[i][j] = char
+
+        return "\n".join(["".join(row) for row in grid_to_draw])
+    
+
+    # TODO: comment the new code
