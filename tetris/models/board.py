@@ -74,13 +74,31 @@ class Board:
 
     def move_piece_down(self):
         x, y = self._current_piece.grid_position
+        x += 1
 
-        if self._can_move(x + 1, y):
-            self._current_piece.grid_position = (x + 1, y)
+        if self._can_move(x, y):
+            self._current_piece.grid_position = (x, y)
             return True
 
         return False
     
+
+    def move_piece_horizontally(self, side: str):
+        x, y = self._current_piece.grid_position
+
+        if side == "d": # right
+            y += 1
+            if self._can_move(x, y): self._current_piece.grid_position = [x, y]
+        
+        elif side == "a": # left
+            y -= 1
+            if self._can_move(x, y): self._current_piece.grid_position = [x, y]
+
+    
+    def rotate_current_piece(self, side: str):
+        self.current_piece.rotate(side)
+        # TODO: check if the piece is able to rotate
+
 
     def draw(self):
         grid_to_draw = [row[:] for row in self._grid] # DEEP COPY -> if you do self._grid.copy() it just copies the main list but none of the lists inside
@@ -88,8 +106,7 @@ class Board:
 
         for i, row in enumerate(self._current_piece.shape, start=x):
             for j, char in enumerate(row, start=y):
-                if "[]" in char:
-                    grid_to_draw[i][j] = char
+                if "[]" in char: grid_to_draw[i][j] = char
 
         return "\n".join(["".join(row) for row in grid_to_draw])
     

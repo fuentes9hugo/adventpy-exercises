@@ -5,7 +5,7 @@ class Piece(ABC):
     def __init__(self, color: tuple[str, str]):
         self._color: tuple[str, str] = color
         self.shape: list[list[str]] = self._get_shape()
-        self.grid_position = []
+        self.grid_position: list[int] = []
 
 
     def __repr__(self):
@@ -50,13 +50,13 @@ class Piece(ABC):
     # Rotate the piece in 2 different ways: right and left
     def rotate(self, side: str):
         new_form = []
-        
-        if side == "right":
+
+        if side == "w": # right
             for rows in zip(*self.shape):
                 new_row = [char for char in rows[::-1]]
                 new_form.append(new_row)
 
-        elif side =="left":
+        elif side =="s": # left
             for rows in zip(*[row[::-1] for row in self.shape]):
                 new_row = [char for char in rows]
                 new_form.append(new_row)

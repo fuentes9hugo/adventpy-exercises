@@ -14,6 +14,10 @@ class O(Piece):
         ]
 
 
+    def rotate(self, side: str):
+        pass
+
+
 class I(Piece):
     def __init__(self):
         color = ("\033[36m", "\033[0m") # Cyan
