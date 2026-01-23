@@ -2,21 +2,21 @@ from abc import ABC, abstractmethod
 
 
 class Piece(ABC):
-    def __init__(self, color: tuple[str, str]):
+    def __init__(self, color: tuple[str, str]) -> None:
         self._color: tuple[str, str] = color
         self.shape: list[list[str]] = self._get_shape()
         self.grid_position: list[int] = []
 
 
-    def __repr__(self):
+    def __repr__(self) -> str:
         return f"{self.__class__.__name__}(shape={self.shape!r}, color={self._color!r})"
 
 
-    def __str__(self):
+    def __str__(self) -> str:
         return "\n".join(["".join(row) for row in self.shape])
 
 
-    def __eq__(self, other: "Piece"):
+    def __eq__(self, other: "Piece") -> bool:
         if not isinstance(other, Piece):
             return NotImplemented
         
@@ -24,18 +24,18 @@ class Piece(ABC):
 
 
     @property
-    def color(self):
+    def color(self) -> tuple[str, str]:
         return self._color
     
 
     # Gets the piece's shape uncolorized
     @abstractmethod
-    def _raw_shape(self):
+    def _raw_shape(self) -> list[list[str]]:
         pass
 
     
     # Colorize the piece's shape
-    def _get_shape(self):
+    def _get_shape(self) -> list[list[str]]:
         shape = self._raw_shape()
 
         for i, row in enumerate(shape):
@@ -48,7 +48,7 @@ class Piece(ABC):
 
 
     # Rotate the piece in 2 different ways: right and left
-    def rotate(self, side: str):
+    def rotate(self, side: str) -> None:
         new_form = []
 
         if side == "w": # right
