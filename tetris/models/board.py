@@ -132,7 +132,8 @@ class Board:
         return "\n".join(["".join(row) for row in grid_to_draw])
     
 
-    # TODO: check if the piece is toching a bottom limit ('##' or any '[]')
+    # Check if the piece is toching a bottom limit ('##' or any '[]')
+    # TODO: check if this funcition works correctly
     def check_bottom_limit(self) -> bool:
         y, x, piece_bottom = next((self._current_piece.grid_position[0] + len(self._current_piece) - i, self._current_piece.grid_position[1], [row])
                              for i, row in enumerate(reversed(self._current_piece)) if "[]" in row)
