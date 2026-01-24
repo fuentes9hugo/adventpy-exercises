@@ -46,6 +46,19 @@ class Board:
     def _make_grid(self) -> deque[list[str]]:
         return deque([["##"] + ["  " for _ in range(self.COLS)] + ["##"] if i < self.ROWS else ["##"] * (self.COLS + 2) for i in range(self.ROWS + 1)])
 
+    
+    # Check if the current piece is allowed to rotate or to move
+    def _can_move(self, pos_y: int, pos_x, piece:Piece=None) -> bool:
+        if not piece: piece = self._current_piece
+
+        if any("[]" in self._grid[i][j] or self._grid[i][j] == "##"
+               for i, row in enumerate(piece.shape, start=pos_y)
+               for j, char in enumerate(row, start=pos_x)
+               if "[]" in char):
+            return False
+        
+        return True
+
 
     # 1. Choose a piece type randomly
     # 2. Calculate the insertion column based on the piece's length
@@ -60,19 +73,6 @@ class Board:
 
         self._current_piece.grid_position = [0, x]
 
-        return True
-
-    
-    # Check if the current piece is allowed to rotate or to move
-    def _can_move(self, pos_y: int, pos_x, piece:Piece=None) -> bool:
-        if not piece: piece = self._current_piece
-
-        if any("[]" in self._grid[i][j] or self._grid[i][j] == "##"
-               for i, row in enumerate(piece.shape, start=pos_y)
-               for j, char in enumerate(row, start=pos_x)
-               if "[]" in char):
-            return False
-        
         return True
 
 
@@ -103,7 +103,7 @@ class Board:
     
     # Rotate the piece is allowed to rotate
     # If it is not allowed, check if moving the piece horizontally allows it to rotate
-    def rotate_current_piece(self, side: str) -> None:
+    def rotate_piece(self, side: str) -> None:
         aux_piece = deepcopy(self._current_piece)
         aux_piece.rotate(side)
         y, x = aux_piece.grid_position
@@ -121,8 +121,9 @@ class Board:
 
 
     # Draw the board's grid with the current piece and the pieces played before
-    def draw(self) -> str:
-        grid_to_draw = [row[:] for row in self._grid] # DEEP COPY -> if you do self._grid.copy() it just copies the main list but none of the lists inside
+    def render(self, block_piece=False) -> str:
+        # DEEP COPY -> if you do self._grid.copy() it just copies the main list but none of the lists inside
+        grid_to_draw = [row[:] for row in self._grid] if not block_piece else self._grid
         y, x = self._current_piece.grid_position
 
         for i, row in enumerate(self._current_piece.shape, start=y):
@@ -134,7 +135,7 @@ class Board:
 
     # Remove rows that are full and insert empty rows at the beginning
     # Retorns the num of rows removed aswell to calculate the score
-    def remover(self):
+    def remover(self) -> None:
         rows_to_remove = []
         for i in range(self.ROWS):
             if "  " not in self._grid[i]: rows_to_remove.append(i)
