@@ -132,10 +132,18 @@ class Board:
         return "\n".join(["".join(row) for row in grid_to_draw])
     
 
-    # Check if the piece is toching a bottom limit ('##' or any '[]')
-    # TODO: check if this funcition works correctly
-    def check_bottom_limit(self) -> bool:
-        y, x, piece_bottom = next((self._current_piece.grid_position[0] + len(self._current_piece) - i, self._current_piece.grid_position[1], [row])
-                             for i, row in enumerate(reversed(self._current_piece)) if "[]" in row)
+    # Remove rows that are full and insert empty rows at the beginning
+    # Retorns the num of rows removed aswell to calculate the score
+    def remover(self):
+        rows_to_remove = []
+        for i in range(self.ROWS):
+            if "  " not in self._grid[i]: rows_to_remove.append(i)
         
-        return not self._can_move(y, x, piece_bottom)
+        for index in reversed(rows_to_remove): del self._grid[index]
+
+        if rows_to_remove:
+            for _ in range(len(rows_to_remove)):
+                empty_row = ["##"] + ["  " for _ in range(self.COLS)] + ["##"]
+                self._grid.appendleft(empty_row)
+
+        return len(rows_to_remove)
