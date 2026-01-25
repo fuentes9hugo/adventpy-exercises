@@ -12,6 +12,7 @@ class Board:
     def __init__(self) -> None:
         self._grid: deque[list[str]] = self._make_grid()
         self._current_piece: Piece = None
+        self._next_pieces: deque[Piece] = deque([choice(Piece.__subclasses__())() for _ in range(3)])
 
 
     def __repr__(self) -> str:
@@ -31,6 +32,11 @@ class Board:
     @property
     def current_piece(self) -> Piece:
         return self._current_piece
+    
+
+    @property
+    def current_piece(self) -> deque[Piece]:
+        return self._next_pieces
 
 
     # --- NO ES NECESARIO, SIMPLEMENTE LO TENGO COMO ANOTACIÓN ---
@@ -64,7 +70,8 @@ class Board:
     # 2. Calculate the insertion column based on the piece's length
     # 3. Set the piece's grid position for future tracking
     def insert_piece(self) -> bool:
-        self._current_piece = choice(Piece.__subclasses__())()
+        self._current_piece = self._next_pieces.popleft()
+        self._next_pieces.append(choice(Piece.__subclasses__())())
 
         piece_len = len(self._current_piece.shape)
         x = (self.COLS + 2) // 2 - piece_len // 2 - (0 if piece_len % 2 == 0 else 1)

@@ -41,7 +41,6 @@ def main():
                 # --- Gravity logic ---
                 if current_time - last_fall > 1:
                     if not board.move_piece_down():
-                        print("\033[H" + board.render(block_piece=True))
                         bottom = True # Piece in board's bottom
                     else:
                         print("\033[H" + board.render())
