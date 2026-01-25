@@ -92,11 +92,11 @@ class Board:
     def move_piece_horizontally(self, side: str) -> None:
         y, x = self._current_piece.grid_position
 
-        if side == "d": # right
+        if side == "right": # right
             x += 1
             if self._can_move(y, x): self._current_piece.grid_position = [y, x]
         
-        elif side == "a": # left
+        elif side == "left": # left
             x -= 1
             if self._can_move(y, x): self._current_piece.grid_position = [y, x]
 

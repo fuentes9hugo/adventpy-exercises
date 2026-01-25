@@ -51,12 +51,12 @@ class Piece(ABC):
     def rotate(self, side: str) -> None:
         new_form = []
 
-        if side == "w": # right
+        if side == "right": # right
             for rows in zip(*self.shape):
                 new_row = [char for char in rows[::-1]]
                 new_form.append(new_row)
 
-        elif side =="s": # left
+        elif side =="left": # left
             for rows in zip(*[row[::-1] for row in self.shape]):
                 new_row = [char for char in rows]
                 new_form.append(new_row)
