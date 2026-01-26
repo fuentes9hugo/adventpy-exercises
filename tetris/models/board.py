@@ -11,8 +11,9 @@ class Board:
 
     def __init__(self) -> None:
         self._grid: deque[list[str]] = self._make_grid()
+        self._posible_pieces: tuple[Piece] = (O, I, T, S, Z, L, J) # Instantiate classes, not objects (without '()')
         self._current_piece: Piece = None
-        self._next_pieces: deque[Piece] = deque([choice(Piece.__subclasses__())() for _ in range(3)])
+        self._next_pieces: deque[Piece] = deque([choice(self._posible_pieces)() for _ in range(3)])
 
 
     def __repr__(self) -> str:
@@ -71,7 +72,7 @@ class Board:
     # 3. Set the piece's grid position for future tracking
     def insert_piece(self) -> bool:
         self._current_piece = self._next_pieces.popleft()
-        self._next_pieces.append(choice(Piece.__subclasses__())())
+        self._next_pieces.append(choice(self._posible_pieces)()) # choice(self._posible_pieces)() == choice(Piece.__subclasses__())() 
 
         piece_len = len(self._current_piece.shape)
         x = (self.COLS + 2) // 2 - piece_len // 2 - (0 if piece_len % 2 == 0 else 1)
