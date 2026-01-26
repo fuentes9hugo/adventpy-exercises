@@ -129,9 +129,9 @@ class Board:
 
 
     # Draw the board's grid with the current piece and the pieces played before
-    def render(self, block_piece=False) -> str:
+    def render(self, solidify) -> str:
         # DEEP COPY -> if you do self._grid.copy() it just copies the main list but none of the lists inside
-        grid_to_draw = [row[:] for row in self._grid] if not block_piece else self._grid
+        grid_to_draw = [row[:] for row in self._grid] if not solidify else self._grid
         y, x = self._current_piece.grid_position
 
         for i, row in enumerate(self._current_piece.shape, start=y):
@@ -143,8 +143,8 @@ class Board:
 
     # Remove rows that are full and insert empty rows at the beginning
     # Retorns the num of rows removed aswell to calculate the score
-    def remover(self) -> None:
-        rows_to_remove = []
+    def remover(self) -> int:
+        rows_to_remove: list = []
         for i in range(self.ROWS):
             if "  " not in self._grid[i]: rows_to_remove.append(i)
         
@@ -155,4 +155,4 @@ class Board:
                 empty_row = ["##"] + ["  " for _ in range(self.COLS)] + ["##"]
                 self._grid.appendleft(empty_row)
 
-        return len(rows_to_remove)
+        return len(rows_to_remove) * 100
