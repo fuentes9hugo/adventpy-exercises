@@ -109,8 +109,22 @@ class Game:
 
     # Display board and score
     def _render(self) -> None:
-        print("\033[H" + self._board.render(self._solidify)) # Move cursor to the start (like os.system("clear") but avoiding flickering)
-        print(f"\nScore: {self._score}")
+        print("\033[2J\033[H" + self._board.render(self._solidify)) # Clear screen and move cursor to the start
+
+        # Display next pieces
+        print("\nNext pieces:")
+        max_rows = max(len(piece.shape) for piece in self._board.next_pieces)
+        piece_widths = [len(piece.shape[0]) * 2 for piece in self._board.next_pieces]
+        for row_idx in range(max_rows):
+            line = ""
+            for piece_idx, piece in enumerate(self._board.next_pieces):
+                if row_idx < len(piece.shape):
+                    line += "".join(piece.shape[row_idx]) + "  "
+                else:
+                    line += " " * piece_widths[piece_idx] + "  "
+            print(line)
+
+        print(f"Score: {self._score}")
 
         if self._solidify:
             self._score += self._board.remover()

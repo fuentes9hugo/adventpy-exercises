@@ -36,10 +36,10 @@ class Board:
     
 
     @property
-    def current_piece(self) -> deque[Piece]:
+    def next_pieces(self) -> deque[Piece]:
         return self._next_pieces
 
-
+    """
     # --- NO ES NECESARIO, SIMPLEMENTE LO TENGO COMO ANOTACIÓN ---
     # Los getters y setters, si no ofrecen ninguna funcionalidad, por ejemplo: el setter no valida nada porque tienes todos los datos controlados, etc.
     # y el getter solo devuelve el valor del atributo siendo este privado
@@ -47,6 +47,7 @@ class Board:
     @current_piece.setter
     def current_piece(self, piece: Piece) -> None:
         if isinstance(piece, Piece): self._current_piece = piece
+    """
 
 
     # Empty grid generation
