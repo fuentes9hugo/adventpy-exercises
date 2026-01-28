@@ -14,6 +14,7 @@ class Board:
         self._posible_pieces: tuple[Piece] = (O, I, T, S, Z, L, J) # Instantiate classes, not objects (without '()')
         self._current_piece: Piece = None
         self._next_pieces: deque[Piece] = deque([choice(self._posible_pieces)() for _ in range(3)])
+        self._next_pieces_display: str = self._compute_next_pieces_display()
 
 
     def __repr__(self) -> str:
@@ -38,6 +39,7 @@ class Board:
     @property
     def next_pieces(self) -> deque[Piece]:
         return self._next_pieces
+    
 
     """
     # --- NO ES NECESARIO, SIMPLEMENTE LO TENGO COMO ANOTACIÓN ---
@@ -73,7 +75,8 @@ class Board:
     # 3. Set the piece's grid position for future tracking
     def insert_piece(self) -> bool:
         self._current_piece = self._next_pieces.popleft()
-        self._next_pieces.append(choice(self._posible_pieces)()) # choice(self._posible_pieces)() == choice(Piece.__subclasses__())() 
+        self._next_pieces.append(choice(self._posible_pieces)()) # choice(self._posible_pieces)() == choice(Piece.__subclasses__())()
+        self._next_pieces_display = self._compute_next_pieces_display()
 
         piece_len = len(self._current_piece.shape)
         x = (self.COLS + 2) // 2 - piece_len // 2 - (0 if piece_len % 2 == 0 else 1)
@@ -83,6 +86,16 @@ class Board:
         self._current_piece.grid_position = [0, x]
 
         return True
+    
+
+    # Precompute the display string for next pieces
+    def _compute_next_pieces_display(self) -> str:
+        lines = ["Next piece:", ""]
+        for piece in self._next_pieces:
+            piece_str = str(piece)
+            lines.extend(piece_str.split("\n"))
+            lines.append("")
+        return "\n".join(lines)
 
 
     # Move the current piece one row down
@@ -138,8 +151,21 @@ class Board:
         for i, row in enumerate(self._current_piece.shape, start=y):
             for j, char in enumerate(row, start=x):
                 if "[]" in char: grid_to_draw[i][j] = char
-
-        return "\n".join(["".join(row) for row in grid_to_draw])
+        
+        # Create board lines
+        board_lines = ["".join(row) for row in grid_to_draw]
+        
+        # Create next pieces lines using precomputed display
+        next_pieces_lines = self._next_pieces_display.split("\n")
+        
+        # Combine board and next pieces side by side
+        result_lines = []
+        for i in range(max(len(board_lines), len(next_pieces_lines))):
+            board_line = board_lines[i] if i < len(board_lines) else ""
+            next_line = next_pieces_lines[i] if i < len(next_pieces_lines) else ""
+            result_lines.append(board_line + "  " + next_line)
+        
+        return "\n".join(result_lines)
     
 
     # Remove rows that are full and insert empty rows at the beginning

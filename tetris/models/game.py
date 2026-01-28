@@ -6,6 +6,8 @@ import sys
 import select
 import tty
 import termios
+import pickle
+from pathlib import Path
 
 
 class Game:
@@ -35,7 +37,6 @@ class Game:
     def _restore_terminal(self) -> None:
         termios.tcsetattr(sys.stdin, termios.TCSADRAIN, self._old_settings)
         os.system("clear")
-        print("Juego terminado.")
 
 
     # Check if there is any input in the keyboard without blocking the program
@@ -46,7 +47,10 @@ class Game:
     def _game_mode_selector(self):
         os.system("clear")
         print("<--- TETRIS --->\n")
-        time.sleep(1)
+        print("Z -> rotate left | ARROW UP -> rotate right\n")
+        print("ARROW LEFT -> move left | ARROW RIGHT -> move right\n")
+        print("Q -> exit")
+        time.sleep(2)
         difficulty = 0
         while difficulty not in ("1", "2", "3"):
             os.system("clear")
@@ -56,6 +60,44 @@ class Game:
             difficulty = input("Choose difficulty (piece's fall delay): ")
 
         return int(difficulty) - 1
+    
+    
+    # Save score in a pickle file and show ranking
+    def _save_score(self):
+        print("--- GAME OVER ---")
+        time.sleep(1)
+        os.system("clear")
+        name = input("Your name: ")
+        os.system("clear")
+        print("--- RANKING ---")
+        
+        # Find absolute path
+        BASE_DIR = Path(__file__).resolve().parent.parent
+        file_path = BASE_DIR / "score" / "score.pkl"
+
+        try:
+            with open(file_path, "rb") as score_file:
+                score = pickle.load(score_file)
+                if not name in score:
+                    score[name] = self._score
+
+                else:
+                    if score[name] < self._score: score[name] = self._score
+            
+            with open(file_path, "wb") as score_file:
+                pickle.dump(score, score_file)
+            
+            for i, person in enumerate(sorted(score.items(), key=lambda x: x[1], reverse=True)[:3], start=1):
+                print(f"{i}- {person[0]}: {person[1]} points")
+                
+        except FileNotFoundError:
+            score = {name: self._score}
+            with open(file_path, "wb") as score_file:
+                pickle.dump(score, score_file)
+            
+            
+            print(f"1- {name}: {self._score} points")
+
 
     # --- Listen keyboard (without blocking) ---
     def _handle_input(self) -> bool:
@@ -111,20 +153,8 @@ class Game:
     def _render(self) -> None:
         print("\033[2J\033[H" + self._board.render(self._solidify)) # Clear screen and move cursor to the start
 
-        # Display next pieces
-        print("\nNext pieces:")
-        max_rows = max(len(piece.shape) for piece in self._board.next_pieces)
-        piece_widths = [len(piece.shape[0]) * 2 for piece in self._board.next_pieces]
-        for row_idx in range(max_rows):
-            line = ""
-            for piece_idx, piece in enumerate(self._board.next_pieces):
-                if row_idx < len(piece.shape):
-                    line += "".join(piece.shape[row_idx]) + "  "
-                else:
-                    line += " " * piece_widths[piece_idx] + "  "
-            print(line)
-
         print(f"Score: {self._score}")
+        print("Q -> exit")
 
         if self._solidify:
             self._score += self._board.remover()
@@ -155,3 +185,4 @@ class Game:
                     time.sleep(0.05) # Little stop to not saturate the CPU
         finally:
             self._restore_terminal()
+            self._save_score()
