@@ -44,6 +44,7 @@ class Game:
         return select.select([sys.stdin], [], [], 0) == ([sys.stdin], [], [])
     
 
+    # User choose the game mode (piece's fall delay)
     def _game_mode_selector(self):
         os.system("clear")
         print("<--- TETRIS --->\n")
