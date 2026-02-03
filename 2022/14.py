@@ -29,20 +29,20 @@ A tener en cuenta:
 - Los números en las pirámides pueden ser negativos."""
 
 
+from functools import cache
+
+
 def getOptimalPath(path: list[list[int]]) -> int:
-    def backtracking(path: list[list[int]], current_ammount: int, index: int) -> int:
-        if len(path) == 1: return current_ammount + min(path[0][index:index + 2])
+    grid = tuple(tuple(row) for row in path)
+    rows = len(grid)
 
-        ammount = None
+    @cache # The cache ensures not calculate the same path or part of it twice
+    def backtracking(row: int, col: int) -> int:
+        if row == rows - 1: return grid[row][col]
 
-        for i, time_needed in enumerate(path[0][index:index + 2], start=index):
-            track = backtracking(path[1:], current_ammount + time_needed, i)
+        return grid[row][col] + min(backtracking(row + 1, col), backtracking(row + 1, col + 1))
 
-            if ammount == None or track < ammount: ammount = track
-            
-        return ammount
-
-    return backtracking(path[1:], path[0][0], 0) if len(path) > 1 else path[0][0]
+    return backtracking(0, 0)
 
 
 def test(e, r):
