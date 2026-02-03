@@ -36,7 +36,7 @@ def getOptimalPath(path: list[list[int]]) -> int:
     grid = tuple(tuple(row) for row in path)
     rows = len(grid)
 
-    @cache # The cache ensures not calculate the same path or part of it twice
+    @cache # The cache ensures that the same path (or part of it) isn't calculated twice
     def backtracking(row: int, col: int) -> int:
         if row == rows - 1: return grid[row][col]
 
