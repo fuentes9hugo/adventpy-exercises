@@ -58,7 +58,7 @@ def main():
         '*.*',
         '...',
         '*#*'
-    ]))) # ➞ 2 
+    ]))) # ➞ 2
     # Los regalos en las esquinas superiores no tienen cámaras alrededor
 
     print(test(4, findUnsafeGifts([
