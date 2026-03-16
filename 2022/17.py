@@ -12,7 +12,7 @@ Ten en cuenta:
 - Se pueden agrupar todos los regalos en un solo saco.
 - Si no se puede agrupar ningún regalo en un saco, se devuelve un array vacío."""
 
-def carryGifts(gifts, maxWeight):
+def carryGifts(gifts: list[str], maxWeight: int) -> list[str]:
     grouped_sacks = []
     sack = []
     actual_weight = 0
