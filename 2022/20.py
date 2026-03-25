@@ -16,10 +16,10 @@ const gifts = [
   { country: 'France', weight: 17 }
 ]
 Autentia nos comenta que, para que el equipo de renos a enviar a cada país sea óptimo, deberíamos:
+- Enviar el mayor número de renos posibles de mayor capacidad de carga
+- Aprovechar al máximo el peso que cada reno puede soportar.
+- Los renos tienen un comportamiento extraño y no admiten que en el equipo haya más renos de un tipo que renos del siguiente tipo por orden descendente de capacidad de carga.
 
-Enviar el mayor número de renos posibles de mayor capacidad de carga
-Aprovechar al máximo el peso que cada reno puede soportar.
-Los renos tienen un comportamiento extraño y no admiten que en el equipo haya más renos de un tipo que renos del siguiente tipo por orden descendente de capacidad de carga.
 Por ejemplo. A Francia (17) no se mandarían diecisiete renos diésel (17 * 1). Hay renos con mayor capacidad de carga, pero tampoco se mandaría un reno nuclear (50), ya que se estaría desaprovechando su capacidad. Se mandaría un reno eléctrico (10), uno gasolina (5) y dos diésel (2 * 1).
 
 A España (37) no se podría mandar un equipo formado por tres eléctricos (3 * 10), uno gasolina (5) y dos diésel (2 * 1), ya que no puede haber más eléctricos que a gasolina. Tampoco dos eléctricos (2 * 10), tres gasolina (3 * 5) y dos diésel (2 * 1), pues no puede haber más a gasolina que a diésel. Habría que mandar dos eléctricos (2 * 10), dos a gasolina (2 * 5) y siete a diésel (7 * 1).
@@ -32,7 +32,29 @@ A tener en cuenta:
 
 
 def howManyReindeers(reindeerTypes: list[dict], gifts: list[dict]) -> list[dict]:
-    pass
+    reindeers = []
+
+    reindeers_weights = sorted((tuple(reindeer.values()) for reindeer in reindeerTypes), key=lambda x: x[1])
+
+    for gift in gifts:
+        country = gift["country"]
+        weight = gift["weight"]
+
+        reindeers_per_country = {"country": country}
+        
+        country_reindeers = [0 for i in range(len(reindeers_weights)) if reindeers_weights[i][1] < weight and weight > 1]
+
+        while weight > 0:
+            for i in range(len(country_reindeers)):
+                if weight - reindeers_weights[i][1] >= 0:
+                    country_reindeers[i] += 1
+                    weight -= reindeers_weights[i][1]
+        
+        reindeers_per_country["reindeers"] = [{"type": reindeers_weights[i][0], "num": country_reindeers[i]} for i in range(len(country_reindeers)) if country_reindeers[i] > 0][::-1]
+        
+        reindeers.append(reindeers_per_country)
+    
+    return reindeers
 
 
 def test(e, r):
