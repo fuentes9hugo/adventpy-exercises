@@ -22,16 +22,16 @@ def executeCommands(commands: list[str]) -> list[int]:
     registers = [0, 0, 0, 0, 0, 0, 0, 0]
 
     def mov_command(param_1, param_2):
-        registers[int(param_2[-1])] = param_1 if isinstance(param_1, int) else registers[int(param_1[-1])]
+        registers[int(param_2[-1])] = int(param_1) if "V" not in param_1 else registers[int(param_1[-1])]
     
     def add_command(param_1, param_2):
         registers[int(param_1[-1])] += registers[int(param_2[-1])]
 
     def dec_command(param_1):
-        registers[int(param_1[-1])] = (registers[int(param_1[-1])] + 1) % 255
+        registers[int(param_1[-1])] = (registers[int(param_1[-1])] - 1) % 256
 
     def inc_command(param_1):
-        registers[int(param_1[-1])] = (registers[int(param_1[-1])] - 1) % 255
+        registers[int(param_1[-1])] = (registers[int(param_1[-1])] + 1) % 256
     
     
     commands_map = {
@@ -51,7 +51,7 @@ def executeCommands(commands: list[str]) -> list[int]:
         action = command[:3]
 
         if action == "JMP":
-            if commands[0] == 0: i = int(command[4])
+            if registers[0] != 0: i = int(command[4])
             
             continue
 
@@ -67,28 +67,28 @@ def test(e, r) -> bool:
 
 
 def main():
-    print(test([14, 10, 0, 0, 0, 0, 0], executeCommands([
+    print(test([14, 10, 0, 0, 0, 0, 0, 0], executeCommands([
         'MOV 5,V00',  # V00 es 5
         'MOV 10,V01', # V01 es 10
         'DEC V00',    # V00 ahora es 4
         'ADD V00,V01' # V00 = V00 + V01 = 14
     ])))
 
-    # Output: [14, 10, 0, 0, 0, 0, 0]
+    # Output: [14, 10, 0, 0, 0, 0, 0, 0]
 
-    print(test([0, 254, 0, 0, 0, 0, 0], executeCommands([
+    print(test([0, 254, 0, 0, 0, 0, 0, 0], executeCommands([
         'MOV 255,V00', # V00 es 255
         'INC V00',     # V00 es 256, desborda a 0
         'DEC V01',     # V01 es -1, desborda a 255
         'DEC V01'      # V01 es 254
     ])))
 
-    # Output: [0, 254, 0, 0, 0, 0, 0]
+    # Output: [0, 254, 0, 0, 0, 0, 0, 0]
 
     print(test([0, 10, 0, 0, 0, 0, 1, 0], executeCommands([
         'MOV 10,V00', # V00 es 10
-        'DEC V00',    # decrementa V00 en 1  <---┐
-        'INC V01',    # incrementa V01 en 1      |
+        'DEC V00',    # decrementa V00 en 1 <---------┐
+        'INC V01',    # incrementa V01 en 1           |
         'JMP 1',      # bucle hasta que V00 sea 0 ----┘
         'INC V06'     # incrementa V06 en 1
     ])))
