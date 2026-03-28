@@ -17,8 +17,45 @@ Recuerda que:
 
 
 def canExit(maze: list[list[str]]) -> bool:
-    pass
+    from collections import deque
 
+    maze_len = len(maze)
+    row_len = len(maze[0])
+
+    start = ()
+
+    for i, row in enumerate(maze):
+        if "S" in row: start = (i, row.index("S"))
+    
+    next_pos = deque([start])
+    visited = {start}
+
+    moves_map = {(1, 0), (0, 1), (0, -1), (-1, 0)}
+
+    while next_pos:
+        current = next_pos.popleft()
+
+
+        for move in moves_map:
+            next_x = current[0] + move[0]
+            next_y = current[1] + move[1]
+
+            if next_x in (-1, maze_len) or next_y in (-1, row_len): continue
+
+            next_move = maze[next_x][next_y]
+
+            if next_move == "W": continue
+
+            if next_move == "E": return True
+
+            next_move_index = (next_x, next_y)
+
+            if next_move_index not in visited:
+                next_pos.append(next_move_index)
+                visited.add(next_move_index)
+    
+    return False
+        
 
 def test(e, r) -> bool:
     return e == r
