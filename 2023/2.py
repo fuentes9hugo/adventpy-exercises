@@ -22,7 +22,7 @@ def manufacture(gifts: list[str], materials: str) -> list[str]:
 """
 
 
-def test(e, r):
+def test(e, r) -> bool:
     return e == r
 
 

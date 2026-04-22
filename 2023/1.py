@@ -18,7 +18,7 @@ def findFirstRepeated(gifts: list[int]) -> int:
     
     return -1
 
-def test(e, r):
+def test(e, r) -> bool:
     return e == r
 
 
