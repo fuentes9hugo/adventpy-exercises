@@ -10,7 +10,7 @@ Normalmente se sumarían todos los valores de los adornos y ya está…
 Pero, ¡ojo! Si un adorno se encuentra inmediatamente a la izquierda de otro de mayor valor, en lugar de sumar, se resta su valor."""
 
 
-def calculatePrice(ornaments: str) -> int:
+def calculatePrice(ornaments: str) -> int | None:
     ornaments_values = {
         "*": 1,
         "o": 5,
