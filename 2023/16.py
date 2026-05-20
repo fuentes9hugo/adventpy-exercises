@@ -44,8 +44,38 @@ El elfo que está de guardia y que intentó solucionar el problema antes de irse
 - Existe una relación entre el índice de un nodo y el índice de sus hijos. ¡Busca el patrón!"""
 
 
+from collections import deque
+
+
 def transformTree(tree: list[int | None]) -> dict | None:
-    return {}
+    if not tree or tree[0] is None: return None
+
+    nodes = []
+
+    for value in tree:
+        if value is None: nodes.append(None)
+        else: nodes.append({"value": value, "left": None, "right": None})
+      
+    queue = deque([0])
+
+    while queue:
+        i = queue.popleft()
+        node = nodes[i]
+
+        first_son = i * 2 + 1
+        second_son = i * 2 + 2
+
+        if first_son < len(nodes):
+            node["left"] = nodes[first_son]
+            if node["left"] is not None:
+                queue.append(first_son)
+        
+        if second_son < len(nodes):
+            node["right"] = nodes[second_son]
+            if node["right"] is not None:
+                queue.append(second_son)
+    
+    return nodes[0]
     
 
 def main():
