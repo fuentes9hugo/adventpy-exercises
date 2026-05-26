@@ -16,7 +16,7 @@ Ten en cuenta que…
 
 
 def revealSabotage(store: list[list[str]]) -> list[list[str]]:
-    neighbor_cells = set((i, j) for i in (-1, 0, 1) for j in (-1, 0, 1) if (i, j) != (0, 0))
+    neighbor_cells = tuple((i, j) for i in (-1, 0, 1) for j in (-1, 0, 1) if (i, j) != (0, 0))
 
     def bombs_conuter(x: int, y: int) -> str:
         bombs = 0
@@ -25,8 +25,7 @@ def revealSabotage(store: list[list[str]]) -> list[list[str]]:
             check_x = x + i
             check_y = y + j
 
-            if not 0 <= check_x < len(store) or not 0 <= check_y < len(store[0]):
-                continue
+            if not 0 <= check_x < len(store) or not 0 <= check_y < len(store[0]): continue
                 
             if store[check_x][check_y] == "*": bombs += 1
 
