@@ -23,8 +23,18 @@ def drawClock(time: str) -> list[list[str]]:
         "9": [["*", "*", "*"], ["*", " ", "*"], ["*", " ", "*"], ["*", "*", "*"], [" ", " ", "*"], [" ", " ", "*"], ["*", "*", "*"]],
         ":": [[" "], [" "], ["*"], [" "], ["*"], [" "], [" "]]
     }
+
+    clock = [[] for _ in range(7)]
+
+    clock_values = list(zip(*[clock_chars[char] for char in time]))
+
+    for i, row in enumerate(clock_values):
+        for j, col in enumerate(row):
+            clock[i].extend(col)
+
+            if j < len(row) -1: clock[i].extend([" "])
     
-    return [[]]
+    return clock
 
 
 def test(e, r) -> bool:
