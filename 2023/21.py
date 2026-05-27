@@ -8,7 +8,28 @@ Dicen que si encuentran el patrón, podrán enviar un mensaje de vuelta a Marte 
 
 
 def findBalancedSegment(message: list[int]) -> list[int]:
-    return []
+    accumulated = 0
+
+    accumulated_map = {accumulated: -1}
+
+    longest_range = []
+    max_length = 0
+
+    for i, num in enumerate(message):
+        accumulated += -1 if num == 0 else 1
+
+        if accumulated not in accumulated_map:
+            accumulated_map[accumulated] = i
+        
+        else:
+            first_index = accumulated_map[accumulated] + 1
+            current_length = i - first_index + 1
+
+            if current_length > max_length:
+                max_length = current_length
+                longest_range = [first_index, i]
+
+    return longest_range
 
 
 def test(e, r) -> bool:
